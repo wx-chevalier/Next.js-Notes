@@ -23,3 +23,20 @@ When a user signs out, Auth.js deletes the JWT from the cookies, destroying the 
 - Auth.js enables advanced features to mitigate the downsides of using shorter session expiry times on the user experience, including automatic session token rotation, optionally sending keep-alive messages (session polling) to prevent short-lived sessions from expiring if there is a window or tab open, background re-validation, and automatic tab/window syncing that keeps sessions in sync across windows any time session state changes or a window or tab gains or loses focus.
 - As with database session tokens, JSON Web Tokens are limited in the amount of data you can store in them. There is typically a limit of around 4096 bytes per cookie, though the exact limit varies between browsers. The more data you try to store in a token and the more other cookies you set, the closer you will come to this limit. Auth.js implements session cookie chunking so that cookies over the 4kb limit will get split and reassembled upon parsing. However, since this data needs to be transmitted on every request, you need to be aware of how much data you want to transfer using this technique.
 - Even if appropriately configured, information stored in an encrypted JWT should not be assumed to be impossible to decrypt at some point - e.g., due to the discovery of a defect or advances in technology. Data stored in an encrypted JSON Web Token (JWE) _may_ be compromised at some point. The recommendation is to generate a [secret](https://authjs.dev/reference/core#secret) with high entropy.
+
+## Database session[](https://authjs.dev/concepts/session-strategies#database-session)
+
+Alternatively to a JWT session strategy, Auth.js also supports database sessions. In this case, instead of saving a JWT with user data after signing in, Auth.js will create a session in your database. A session ID is then saved in a `HttpOnly` cookie. This is similar to the JWT session strategy, but instead of saving the user data in the cookie, it only stores an obscure value pointing to the session in the database. So whenever you try to access the user session, you will query the database for the data.
+
+When a user signs out, the session is deleted from the database, and the session ID is deleted from the cookies.
+
+### Advantages[](https://authjs.dev/concepts/session-strategies#advantages-1)
+
+- Database sessions can be at any time modified server-side, so you can implement features that might be more difficult - but not impossible - using the JWT strategy, etc.: “sign out everywhere”, or limiting concurrent logins
+- Auth.js has no opinion on the type of database you are using; we have a big list of [official database adapters](https://authjs.dev/getting-started/database), but you can [implement your own](https://authjs.dev/guides/creating-a-database-adapter) as well
+
+### Disadvantages[](https://authjs.dev/concepts/session-strategies#disadvantages-1)
+
+- Database sessions need a roundtrip to your database, so they might be slower at scale unless your connections/databases are accommodated for it
+- Many database adapters are not yet compatible with the Edge, which would allow faster and cheaper session retrieval
+- Setting up a database takes more effort and requires extra services to manage compared to the stateless JWT strategy
