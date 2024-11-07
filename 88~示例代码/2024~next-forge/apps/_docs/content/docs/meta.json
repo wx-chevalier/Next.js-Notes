@@ -1,0 +1,30 @@
+{
+  "title": "ui",
+  "root": true,
+  "pages": [
+    "index",
+    "setup",
+    "structure",
+    "...",
+    "---Features---",
+    "analytics",
+    "authentication",
+    "blog",
+    "bundle-analysis",
+    "cron",
+    "dark-mode",
+    "debugging",
+    "email",
+    "env",
+    "flags",
+    "formatting",
+    "monitoring",
+    "orm",
+    "payments",
+    "seo",
+    "sitemap",
+    "testing",
+    "---Guides---",
+    "database"
+  ]
+}
