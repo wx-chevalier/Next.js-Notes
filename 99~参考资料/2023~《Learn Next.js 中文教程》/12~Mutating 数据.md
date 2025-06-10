@@ -160,8 +160,8 @@ export default function Form({
 }
 ```
 
-> 值得知道：在 HTML 中，您会将 URL 传递给 `action` 属性。此 URL 将是您的 form 数据应提交的目标（通常是 API 端点）。  
-> 然而，在 React 中，action 属性被视为一个特殊的 prop - 这意味着 React 在其之上构建，以允许调用 actions。  
+> 值得知道：在 HTML 中，您会将 URL 传递给 `action` 属性。此 URL 将是您的 form 数据应提交的目标（通常是 API 端点）。
+> 然而，在 React 中，action 属性被视为一个特殊的 prop - 这意味着 React 在其之上构建，以允许调用 actions。
 > 在幕后，Server Actions 创建一个 POST API 端点。这就是在使用 Server Actions 时为什么不需要手动创建 API 端点的原因。
 
 ### 3. 从 formData 中提取数据
