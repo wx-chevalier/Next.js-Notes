@@ -322,9 +322,6 @@ Thank you, Ankur Tyagi ([@tyaga001](https://github.com/tyaga001)), for all your 
 
 #### Authors: 2
 
-- [@dependabot[bot]](https://github.com/dependabot[bot])
-- Hayden Bleasel ([@haydenbleasel](https://github.com/haydenbleasel))
-
 ---
 
 # v2.6.3 (Thu Oct 31 2024)
@@ -378,9 +375,6 @@ Thank you, Ankur Tyagi ([@tyaga001](https://github.com/tyaga001)), for all your 
 # v2.5.1 (Thu Oct 31 2024)
 
 #### ⚠️ Pushed to `main`
-
-- Update shadcn/ui ([@haydenbleasel](https://github.com/haydenbleasel))
-- Bump deps ([@haydenbleasel](https://github.com/haydenbleasel))
 
 #### Authors: 1
 
