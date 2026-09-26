@@ -8,6 +8,5 @@ Clone the repo using:
 
 ```sh
 npx next-forge init [my-project]
-```
-
+```tsx
 Then read the [docs](https://www.next-forge.com/docs) for more information.

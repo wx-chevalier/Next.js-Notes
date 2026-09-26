@@ -21,8 +21,7 @@ Just write some markdown in a `.mdx` file, and it will automatically become a pr
 # My Page
 
 This is my page.
-```
-
+```tsx
 ### Routing
 
 Add new pages by creating `.mdx` files in the `app/content` directory. The file name becomes the URL path:
@@ -43,8 +42,7 @@ import MyComponent from '../components/my-component'
 <MyComponent />
 
 *And here's some more markdown content.*
-```
-
+```tsx
 ## Requirements
 
 - Node.js 18+
@@ -57,14 +55,12 @@ import MyComponent from '../components/my-component'
 
 ```bash
 npm install
-```
-
+```tsx
 ### Run development server
 
 ```bash
 npm run dev
-```
-
+```tsx
 Visit <http://localhost:3000>
 
 ### Build for production
@@ -72,8 +68,7 @@ Visit <http://localhost:3000>
 ```bash
 npm run build
 npm start
-```
-
+```tsx
 ## Project Structure
 
 I tried to make this as simple as possible, given the constraints of modern web development.
@@ -94,13 +89,12 @@ my-markdown-app/
 │   └── page.mdx       # Home page content (renders index.mdx at root)
 ├── components       # Add custom React components in this directory
 ├── mdx-components.tsx # Sets up MDX components
-├── next.config.mjs    # Next.js configuration  
+├── next.config.mjs    # Next.js configuration
 ├── package.json       # Project dependencies
 ├── postcss.config.js  # PostCSS configuration
 ├── tailwind.config.js # Tailwind CSS configuration
 └── tsconfig.json      # TypeScript configuration
-```
-
+```tsx
 ## License
 
 MIT

@@ -10,10 +10,9 @@ _“T3 Stack”_ 是由 [Theo↗](https://twitter.com/t3dotgg) 创建的一个 w
 
 算是吧？
 
-```
+```tsx
 create-t3-app
-```
-
+```tsx
 是由经验丰富的 T3 Stack 开发者构建的 CLI 命令行工具，用于简化一个模块化的 T3 Stack 应用程序的配置过程。这意味着每个部分都是可选的，而“模板”则是根据你的具体需求生成的。
 
 经过无数项目和多年的技术积累，我们沉淀了很多的观点和见解。我们尽力将它们融入到了这个 CLI 中。
@@ -28,10 +27,9 @@ create-t3-app
 
 很容易陷入“添加一切”的陷阱 —— 我们明确不想这样做。被添入到
 
-```
+```tsx
 create-t3-app
-```
-
+```tsx
 中的每个部分都应该解决存在于核心技术中的特定问题。这意味着我们不会添加诸如状态库（zustand、redux）之类的东西，但我们会添加像 NextAuth.js 之类的库，并为你集成 Prisma 和 tRPC。
 
 ### [负责任地“尝鲜”](https://create.t3.gg/zh-hans/introduction#负责任地尝鲜)

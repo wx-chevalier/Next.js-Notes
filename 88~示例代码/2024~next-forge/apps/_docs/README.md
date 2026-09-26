@@ -11,8 +11,7 @@ npm run dev
 pnpm dev
 # or
 yarn dev
-```
-
+```tsx
 Open http://localhost:3000 with your browser to see the result.
 
 ## Learn More
