@@ -27,7 +27,7 @@ The session data returned to the client looks like this:
     name: "Ejiro Asiuwhu";
   }
 }
-```tsx
+```
 The payload doesn’t contain any sensitive data. The session payload or data is meant for presentation purposes — that is, it’s meant to be displayed to the user.
 
 Auth.js also provides the `useSession` React Hook, which can be used to check user login status. Meanwhile, Auth.js provides a REST API that is used by the React app. To learn more about what the REST API NextAuth exposes, check out the [official docs](https://next-auth.js.org/getting-started/rest-api).
@@ -43,7 +43,7 @@ To get started, create a new Next.js application by running the following comman
 
 ```bash
 npx create-next-app@latest
-```tsx
+```
 You will be prompted to go through a series of questions; your selections should be the same as the ones from the image below:
 
 ![Next.js Starter Application Homepage](https://blog.logrocket.com/wp-content/uploads/2022/03/next-js-starter-application-homepage.png)
@@ -54,7 +54,7 @@ Now, change the directory into the project folder and launch the development ser
 npm run dev
 # or
 yarn run dev
-```tsx
+```
 By default, the project will run on port `3000`. Launch your browser and navigate to `http://localhost:3000`. You should end up with this:
 
 ![Next.js Starter Application](https://blog.logrocket.com/wp-content/uploads/2024/03/Next-js-starter-application.png)
@@ -81,7 +81,7 @@ Auth.js v5 is currently in beta, so use the beta suffix as seen in the command b
 npm install next-auth@beta
 # or
 pnpm add next-auth@beta
-```tsx
+```
 Our demo app will allow users to sign in using Auth.js’ GitHub and Email providers. Let’s begin by correctly configuring Auth.js in our project.
 
 ## Configuring Auth.js
@@ -100,7 +100,7 @@ export const { handlers, auth } = NextAuth({
   providers: [Github],
   debug: process.env.NODE_ENV === "development",
 } satisfies NextAuthConfig);
-```tsx
+```
 The code above configures Auth.js for authentication using GitHub as the provider. It exports the `handlers` and `auth` objects, which are set up to handle authentication flows, and enables `debug` mode during development. The configuration is also validated against the `NextAuthConfig` type for type safety.
 
 Next, we need to create a [catch-all dynamic route](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes#catch-all-segments) that will respond to all the relevant Auth.js API routes — like `/signIn` and `/signOut` — so that our application can interact with our chosen OAuth provider using the [OAuth 2](https://oauth.net/2) protocol. From your `app` directory, create the following file: `/api/[…nextauth]/route.ts`:
@@ -109,7 +109,7 @@ Next, we need to create a [catch-all dynamic route](https://nextjs.org/docs/page
 // src/app/api/[...nextauth]/route.ts
 import { handlers } from "@/auth";
 export const { GET, POST } = handlers;
-```tsx
+```
 The handler is exported under the aliases `GET` and `POST`, indicating that it will manage both types of HTTP requests for authentication routes. We cannot authenticate users at this stage because we haven’t set our Auth.js secret key or obtained our GitHub credentials. Let’s explore how to configure environment variables in Auth.js to resolve this.
 
 ## Environment variables in Auth.js
@@ -134,13 +134,13 @@ You can use the Node.js built-in crypto module or the OpenSSL command available 
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 or
 openssl rand -base64 32
-```tsx
+```
 This generates a secure, random, 32-byte value encoded as a hexadecimal string. Set this string as the value of the `AUTH_SECRET` environment variable in your `.env.local` file:
 
 ```javascript
 # .env.local
 AUTH_SECRET=<YOUR_SECRET_KEY>
-```tsx
+```
 Note: If you don’t provide an `AUTH_SECRET` variable, Auth.js will automatically generate one for you when the server starts. However, this dynamically generated secret won’t persist across server restarts.
 
 This means all your signed tokens and sessions will become invalid every time your server restarts, as they will fail the verification against the new secret. Therefore, it is strongly recommended that you provide your own `AUTH_SECRET` variable for consistent session and token management in production environments.
@@ -154,7 +154,7 @@ Your `.env.local` file should now look like this:
 AUTH_SECRET=<YOUR_SECRET_KEY>
 AUTH_GITHUB_ID=<YOUR_GITHUB_ID>
 AUTH_GITHUB_SECRET=<YOUR_GITHUB_SECRET>
-```tsx
+```
 And that’s all it takes to set up a barebones GitHub authentication with Auth.js! The steps are similar for other OAuth providers but make sure to read the Auth.js documentation for each particular provider as a guide.
 
 If you navigate to the default Auth.js login screen at `http://localhost:3000/api/auth/signin`, you’ll see a button to sign in with GitHub:
@@ -172,14 +172,14 @@ export default function GitHubButton() {
     <button onClick={() => signIn('github')>Continue with GitHub</button>
   )
 }
-```tsx
+```
 ## Checking the user login state
 
 Auth.js v5 has streamlined the process for querying a user’s session by unifying APIs such as `getServerSession`, `getSession`, `withAuth`, and `getToken` into a single, universal `auth()` call. We already encountered this function when we exported it from the Auth.js configuration file:
 
 ```javascript
 export const { handlers, auth } = NextAuth({ … });
-```tsx
+```
 Below is a table from the Auth.js documentation demonstrating how to use the new `auth()` method in various environments. The consensus is that `useSession` should be used within React Client Components and the `auth()` call in other scenarios:
 
 ![Table From The Auth.js Documentation With The Auth() Method](https://blog.logrocket.com/wp-content/uploads/2024/03/auth-method-auth-js-docs.png)
@@ -224,7 +224,7 @@ export default async function RootLayout({
     </html>
   );
 }
-```tsx
+```
 In the above code snippet, we imported the `SessionProvider` component from the `next-auth/react` package and the `auth` function from Auth.js. We will use them to provide session state to all components in your application, allowing you to access a session’s data.
 
 If you’ve followed the steps so far, you’ll notice something strange: an error occurs. This is because:
@@ -238,7 +238,7 @@ We can solve this error by flagging the `SessionProvider` as a [Client Component
 ```typescript
 "use client"; //tells Next.js to render this component on the client
 export { SessionProvider as AuthProvider } from "next-auth/react";
-```tsx
+```
 Instead of importing `SessionProvider` directly from Auth.js, we will use the client-compatible version we just created. Here’s the updated code for the `layout.tsx` file:
 
 ```typescript
@@ -253,7 +253,7 @@ export default async function RootLayout({
     const session = await auth()
     return (...); //previous code here remains unchanged
 }
-```tsx
+```
 ### Using the `useSession` Hook
 
 Having configured the `SessionProvider`, let’s use the `useSession` Hook to fetch the logged-in user’s info and display that data in the application.
@@ -296,7 +296,7 @@ export default function UserSession() {
     </main>
   );
 }
-```tsx
+```
 In the above code snippet, we imported the next-auth hooks `signOut` and `useSession`:
 
 - The `signOut` Hook destroys the activate session and logs the user out
@@ -329,7 +329,7 @@ export default async function MyServerComponent({
     </div>
   );
 }
-```tsx
+```
 ## Magic link authentication with Auth.js
 
 Passwordless authentication methods like magic links have become increasingly popular as a secure alternative to passwords and usernames. Auth.js makes this easy to implement with the Email Provider.
@@ -353,14 +353,14 @@ export const { handlers, auth } = NextAuth({
         maxAge: 432000, // 5days
     },
 } satisfies NextAuthConfig)
-```tsx
+```
 Now let’s set up a database. Auth.js has adapters for various databases including SQL, Postgres, MongoDB, and more. We’ll adopt the [MongoDB adapter](https://authjs.dev/getting-started/adapters/mongodb) for this example. You can follow [this post’s](https://www.mongodb.com/docs/atlas/getting-started/) Atlas UI guide to create a MongoDB database in the cloud. After you do so, grab your database connection string and save it as `MONGO_URI` in your env file.
 
 Next, install MongoDB and its Auth.js adapter with the command below:
 
 ```bash
 npm install @auth/mongodb-adapter mongodb
-```tsx
+```
 The MongoDB adapter does not handle connections automatically, so you will have to make sure that you pass the adapter a `MongoClient` that is already connected. In the `src` folder, create a new file at `lib/mongo-client.ts` with the following code from their docs:
 
 ```typescript
@@ -392,7 +392,7 @@ if (process.env.NODE_ENV === "development") {
 // Export a module-scoped MongoClient promise. By doing this in a
 // separate module, the client can be shared across functions.
 export default clientPromise;
-```tsx
+```
 Now we’re ready to use the email provider for authentication.
 
 ### How magic links work in Auth.js
@@ -433,7 +433,7 @@ export const { handlers, auth, signIn } = NextAuth({
     maxAge: 432000, // 5days
   },
 } satisfies NextAuthConfig);
-```tsx
+```
 This setup allows you to send pre-made test emails exclusively to your email address, using the free `onboarding@resend.dev` domain.
 
 And that’s all! Magic link authentication should now work in your app. To initiate this authentication flow, I’ve created a simple form using [Shadcn](https://blog.logrocket.com/shadcn-ui-adoption-guide/) and [React Hook Form](https://blog.logrocket.com/react-hook-form-complete-guide/) in the demo repository. Here is a snippet:
@@ -530,7 +530,7 @@ export default function Home() {
         </main>
     )
 }
-```tsx
+```
 Notice the logic in the `sendMagicLink` function and how the `callbackUrl` parameter of the `signIn` function is used to redirect the user to a `/protected` route — which we’ll create soon — after successfully signing in:
 
 [![Successful Signin](https://blog.logrocket.com/wp-content/uploads/2024/03/successful-signin.png)](https://blog.logrocket.com/auth-js-client-side-authentication-next-js/attachment/successful-signin/)
@@ -557,7 +557,7 @@ providers: [
     },
   }),
 ]
-```tsx
+```
 For an example codebase that demonstrates the implementation of custom magic links with Auth.js v5, [this repository](https://github.com/Chinwike1/dentist-direct/blob/test/auth.ts) and [Shadcn’s taxonomy](https://github.com/shadcn-ui/taxonomy) are valuable resources.
 
 ## Creating a custom login page in Auth.js
@@ -577,7 +577,7 @@ export const authOptions: NextAuthOptions = {
   },
 }
 ...
-```tsx
+```
 Here, you overrode the `signIn` value of the default login page and set it to `/signin`. Moving forward, this is the page Auth.js will use for user authentication. It will redirect users to this page when authentication is required.
 
 Now, you need to make the page. Create a `signin/page.tsx` file in the `app` directory and add the code snippet below:
@@ -682,7 +682,7 @@ export default function SignInPage() {
     </main>
   );
 }
-```tsx
+```
 With that, anyone who tries to log in will be redirected to the custom login page below:
 
 ![Custom Login Page](https://blog.logrocket.com/wp-content/uploads/2024/03/custom-login-page.png)
@@ -741,7 +741,7 @@ export const { handlers, auth } = NextAuth({
         maxAge: 432000, // 5days
     },
 } satisfies NextAuthConfig)
-```tsx
+```
 ### `redirect` callback
 
 The `redirect` callback is called anytime the user is redirected to a callback URL (e.g., on sign-in or sign-out). By default, Auth.js only allows URLs on the same origin as the site. You can use this callback to customize this behavior and allow or deny specific redirect URLs.
@@ -758,7 +758,7 @@ callbacks: {
     return baseUrl
   }
 }
-```tsx
+```
 ### `jwt` callback
 
 The `jwt` callback is called whenever a JSON Web Token is created (e.g., at sign-in) or updated (e.g., whenever a session is accessed on the client). This callback allows you to customize the contents of the JWT by adding or modifying claims.
@@ -776,7 +776,7 @@ callbacks: {
     return token
   }
 }
-```tsx
+```
 ### `session` callback
 
 The `session` callback is called whenever a session is checked, such as when using `getSession`, `useSession`, or `/api/auth/session`. By default, Auth.js only returns a subset of the token for security reasons. If you want to make something available to the client that you added to the token (like `access_token` and `user.id` from the `jwt` callback), you need to explicitly forward it in this callback.
@@ -792,7 +792,7 @@ callbacks: {
     return session
   }
 }
-```tsx
+```
 ## Creating protected routes with Auth.js
 
 The Next.js Server Components architecture provides two primary methods for protecting routes in your application:
@@ -838,7 +838,7 @@ export default async function ProtectedLayout({
   }
   return <main>{children}</main>;
 }
-```tsx
+```
 The code above checks if a user session exists. If there is no session, it uses Next.js’ `redirect` function to redirect the user to the sign-in page. If there is a session, the user gets access to the page. This ensures that only logged-in users can access the protected route.
 
 ### Protecting routes with middleware
@@ -858,7 +858,7 @@ export const config = {
     "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };
-```tsx
+```
 Notice the `config` object where we define the routes we want Next.js middleware functionality to apply to. The `matcher` property dictates the paths — and subpaths — to which the middleware function should be applied.
 
 But if you open your app now, you’ll notice that it crashed with the error `Error: The edge runtime does not support Node.js 'crypto' module`, and a stack trace pointing to MongoDB and the mongodb-adapter package:
@@ -866,7 +866,7 @@ But if you open your app now, you’ll notice that it crashed with the error `Er
 ```javascript
 Import trace for requested module:
 ./node_modules/.pnpm/@auth+mongodb-adapter@3.2.0_mongodb@6.7.0/node_modules/@auth/mongodb-adapter/index.js
-```tsx
+```
 This is because the Edge runtime does not support certain Node.js modules, including `crypto`. To tackle this, we’ll need to export an `auth` instance from our middleware file that doesn’t have a database adapter attached to it. We can do this by creating an `auth.config.ts` file that will hold an instance of the `NextAuthConfig` interface:
 
 ```typescript
@@ -875,7 +875,7 @@ import type { NextAuthConfig } from "next-auth";
 export const authConfig = {
   providers: [],
 } satisfies NextAuthConfig;
-```tsx
+```
 We can then initialize it in our middleware like so to effectively protect the `/protected` route:
 
 ```typescript
@@ -906,7 +906,7 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
-```tsx
+```
 And now the `/protected` route is protected from unauthenticated users. `auth.config.ts` should be an extension of your NextAuth config in `auth.ts` so we’ll import this object and spread it into the NextAuth config:
 
 ```typescript
@@ -943,7 +943,7 @@ export const { handlers, auth } = NextAuth({
     maxAge: 432000, // 5 days
   },
 } satisfies NextAuthConfig);
-```tsx
+```
 The middleware code works similarly to the strategy we used in the `auth()` call in `layout.tsx`. The key advantage here is that the logic for protecting routes is now centralized and not scattered across several `layout.tsx` files.
 
 ## Conclusion
